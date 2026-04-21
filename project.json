@@ -1,0 +1,23 @@
+{
+  "overview": "Application mobile-first complète de gestion des transports en bus pour l'Algérie (régions Naâma, M'sharia, Aïn Sefra). Inscription avec vérification OTP, tableau de bord avec QR code personnel, recharge de solde BaridiMob, suivi des lignes et historique des trajets — entièrement en français.",
+  "features": [
+    "Inscription et connexion avec vérification OTP par SMS",
+    "Tableau de bord avec QR code personnel et solde en temps réel",
+    "Sélection de bus par région avec suivi des trajets",
+    "Historique des trajets avec export PDF et CSV",
+    "Recharge de solde via BaridiMob (simulé)",
+    "Notifications et alertes en temps réel",
+    "Interface 100% en français, mobile-first"
+  ],
+  "category": "transport",
+  "tags": [
+    "transport",
+    "bus",
+    "alg-rie",
+    "paiement",
+    "qr-code",
+    "mobile",
+    "fran-ais"
+  ],
+  "last_updated": "2026-04-21T08:16:09.643Z"
+}

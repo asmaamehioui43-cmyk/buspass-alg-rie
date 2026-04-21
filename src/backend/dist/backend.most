@@ -1,0 +1,128 @@
+// Version: 1.0.0
+type Bus__564800990 =
+  {
+    conducteur : Text;
+    estEnService : Bool;
+    id : Text;
+    ligneId : Nat;
+    numeroPlaque : Text
+  };
+type Data__791452850<K, V> =
+  {var count : Nat__490723111; kvs : [var ?(K, V)]};
+type DonneesOtp__287310708 =
+  {
+    code : Text;
+    expireA : Timestamp__608627923;
+    telephone : Text;
+    tentatives : Nat
+  };
+type Internal__8484328<K, V> =
+  {children : [var ?Node__46230540<K, V>]; data : Data__791452850<K, V>};
+type Leaf__809889148<K, V> = {data : Data__791452850<K, V>};
+type Ligne__26029501 =
+  {
+    id : Nat;
+    nom : Text;
+    numero : Text;
+    region : Region__185192458;
+    stations : [Station__431037401];
+    tarif : Nat
+  };
+type Nat__490723111 = Nat__920180692;
+type Nat__920180692 = Nat;
+type Node__46230540<K, V> =
+  {#internal : Internal__8484328<K, V>; #leaf : Leaf__809889148<K, V>};
+type Notification__264708741 =
+  {
+    id : Nat;
+    lue : Bool;
+    message : Text;
+    timestamp : Timestamp__515776233;
+    typeNotif : TypeNotification__534501737;
+    utilisateurId : UserId__990689167
+  };
+type Region__185192458 = {#ainSefra; #msharia; #naama};
+type Station__431037401 = {etaMinutes : ?Nat; nom : Text; ordre : Nat};
+type TentativeOtp__1045238474 =
+  {telephone : Text; timestamp : Timestamp__608627923};
+type Timestamp__223287625 = Timestamp__301639476;
+type Timestamp__301639476 = Int;
+type Timestamp__515776233 = Timestamp__301639476;
+type Timestamp__608627923 = Timestamp__301639476;
+type Transaction__822992244 =
+  {
+    id : Nat;
+    montant : Nat;
+    soldeApres : Nat;
+    timestamp : Timestamp__223287625;
+    typeTransaction : TypeTransaction__948519045;
+    utilisateurId : UserId__356286356
+  };
+type TypeNotification__534501737 = {#alerte; #recharge; #trajet};
+type TypeTransaction__948519045 =
+  {
+    #debitTrajet : {busId : Text; ligneId : Nat; trajetId : Text};
+    #recharge : {referenceBaridi : Text}
+  };
+type UserId__158757552 = Nat;
+type UserId__356286356 = UserId__158757552;
+type UserId__911210446 = UserId__158757552;
+type UserId__990689167 = UserId__158757552;
+type Utilisateur__933563398 =
+  {
+    dateInscription : Timestamp__608627923;
+    email : ?Text;
+    estVerifie : Bool;
+    id : UserId__911210446;
+    motDePasseHache : Text;
+    nomComplet : Text;
+    numeroCarte : Text;
+    solde : Nat;
+    telephone : Text
+  };
+actor {
+  stable bus :
+    {
+      var blockIndex : Nat__490723111;
+      var blocks : [var [var ?Bus__564800990]];
+      var elementIndex : Nat__490723111
+    };
+  stable lignes :
+    {
+      var blockIndex : Nat__490723111;
+      var blocks : [var [var ?Ligne__26029501]];
+      var elementIndex : Nat__490723111
+    };
+  stable var nextNotifId : Nat;
+  stable var nextTxId : Nat;
+  stable var nextUserId : Nat;
+  stable notifications :
+    {
+      var blockIndex : Nat__490723111;
+      var blocks : [var [var ?Notification__264708741]];
+      var elementIndex : Nat__490723111
+    };
+  stable otpEnAttente :
+    {
+      var root : Node__46230540<Text, DonneesOtp__287310708>;
+      var size : Nat__490723111
+    };
+  stable tentativesOtp :
+    {
+      var blockIndex : Nat__490723111;
+      var blocks : [var [var ?TentativeOtp__1045238474]];
+      var elementIndex : Nat__490723111
+    };
+  stable transactions :
+    {
+      var blockIndex : Nat__490723111;
+      var blocks : [var [var ?Transaction__822992244]];
+      var elementIndex : Nat__490723111
+    };
+  stable utilisateurs :
+    {
+      var blockIndex : Nat__490723111;
+      var blocks : [var [var ?Utilisateur__933563398]];
+      var elementIndex : Nat__490723111
+    }
+};

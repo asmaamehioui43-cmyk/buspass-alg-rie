@@ -1,0 +1,153 @@
+type Utilisateur = 
+ record {
+   dateInscription: Timestamp;
+   email: opt text;
+   estVerifie: bool;
+   id: UserId;
+   motDePasseHache: text;
+   nomComplet: text;
+   numeroCarte: text;
+   solde: nat;
+   telephone: text;
+ };
+type UserId = nat;
+type TypeTransaction = 
+ variant {
+   debitTrajet: record {
+                  busId: text;
+                  ligneId: nat;
+                  trajetId: text;
+                };
+   recharge: record {referenceBaridi: text;};
+ };
+type TypeNotification = 
+ variant {
+   alerte;
+   recharge;
+   trajet;
+ };
+type Transaction = 
+ record {
+   id: nat;
+   montant: nat;
+   soldeApres: nat;
+   timestamp: Timestamp;
+   typeTransaction: TypeTransaction;
+   utilisateurId: UserId;
+ };
+type Timestamp = int;
+type Station = 
+ record {
+   etaMinutes: opt nat;
+   nom: text;
+   ordre: nat;
+ };
+type ResultOk_3 = 
+ variant {
+   err: text;
+   ok: text;
+ };
+type ResultOk_2 = 
+ variant {
+   err: text;
+   ok: Transaction;
+ };
+type ResultOk_1 = 
+ variant {
+   err: text;
+   ok: Utilisateur;
+ };
+type ResultOk = 
+ variant {
+   err: text;
+   ok: bool;
+ };
+type Region = 
+ variant {
+   ainSefra;
+   msharia;
+   naama;
+ };
+type ParamsRecharge = 
+ record {
+   montant: nat;
+   referenceBaridi: text;
+   utilisateurId: UserId;
+ };
+type ParamsInscription = 
+ record {
+   email: opt text;
+   motDePasseHache: text;
+   nomComplet: text;
+   telephone: text;
+ };
+type ParamsDebitTrajet = 
+ record {
+   busId: text;
+   ligneId: nat;
+   montant: nat;
+   trajetId: text;
+   utilisateurId: UserId;
+ };
+type PageTransactions = 
+ record {
+   elements: vec Transaction;
+   page: nat;
+   parPage: nat;
+   total: nat;
+ };
+type Notification = 
+ record {
+   id: nat;
+   lue: bool;
+   message: text;
+   timestamp: Timestamp;
+   typeNotif: TypeNotification;
+   utilisateurId: UserId;
+ };
+type Ligne = 
+ record {
+   id: nat;
+   nom: text;
+   numero: text;
+   region: Region;
+   stations: vec Station;
+   tarif: nat;
+ };
+type FiltreTransactions = 
+ record {
+   dateDebut: opt Timestamp;
+   dateFin: opt Timestamp;
+   ligneId: opt nat;
+   page: nat;
+   parPage: nat;
+ };
+type Bus = 
+ record {
+   conducteur: text;
+   estEnService: bool;
+   id: text;
+   ligneId: nat;
+   numeroPlaque: text;
+ };
+service : {
+  busParLigne: (ligneId: nat) -> (vec Bus) query;
+  debiterTrajet: (params: ParamsDebitTrajet) -> (ResultOk_2);
+  envoyerOtp: (telephone: text) -> (ResultOk_3);
+  inscrire: (params: ParamsInscription) -> (ResultOk_1);
+  lignesParRegion: (region: Region) -> (vec Ligne) query;
+  listerLignes: () -> (vec Ligne) query;
+  listerTransactions: (utilisateurId: UserId, filtre: FiltreTransactions) ->
+   (PageTransactions) query;
+  marquerCommeLue: (notifId: nat, utilisateurId: UserId) -> (ResultOk);
+  mettreAJourProfil: (id: UserId, email: opt text, telephone: opt text) ->
+   (ResultOk);
+  notificationsNonLues: (utilisateurId: UserId) -> (vec Notification) query;
+  obtenirLigne: (id: nat) -> (opt Ligne) query;
+  obtenirProfil: (id: UserId) -> (opt Utilisateur) query;
+  obtenirSolde: (utilisateurId: UserId) -> (opt nat) query;
+  rechargerSolde: (params: ParamsRecharge) -> (ResultOk_2);
+  seConnecter: (telephone: text, motDePasseHache: text) -> (ResultOk_1);
+  toutesNotifications: (utilisateurId: UserId) -> (vec Notification) query;
+  verifierOtp: (telephone: text, code: text) -> (ResultOk);
+}
